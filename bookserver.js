@@ -32,7 +32,7 @@ app.get('/api/books', async (req, res) => {
         console.error("Error fetching books: ", error);
         res.status(500).json({ error: 'Internal Server Error' });
     }
-})
+});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
