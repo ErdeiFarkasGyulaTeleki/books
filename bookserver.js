@@ -49,6 +49,17 @@ app.get('/api/books', async (req, res) => {
     }
 });
 
+app.post('/api/books', async (req, res) => {
+    try {
+        const { title, author, pages, available } = req.body;
+        const result = await pool.query('INSERT INTO books (title, author, pages, available) VALUES (?, ?, ?, ?)', [title, author, pages, available]);
+        res.status(201).json({ message: 'Product added successfully ', productId: result.insertId, title, author, pages, available});
+    } catch (error) {
+        console.error('Error adding product:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
