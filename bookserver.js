@@ -76,6 +76,20 @@ app.put('/api/books/:id', async (req, res) => {
     }
 });
 
+app.delete('/api/books/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const result = await pool.query('DELETE FROM books WHERE id = ?', [id]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json({ message: 'Product deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting product:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+})
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
