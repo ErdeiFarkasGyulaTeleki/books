@@ -60,6 +60,22 @@ app.post('/api/books', async (req, res) => {
     }
 });
 
+app.put('/api/books/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { title, author, pages, available } = req.body;
+
+        const [result] = await pool.query('UPDATE books SET title = ?, author = ?, pages = ?, available = ? WHERE id = ?', [title, author, pages, available, id]);
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+        res.json({ id, title, author, pages, available });
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
